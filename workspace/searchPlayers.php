@@ -57,9 +57,9 @@
           <h1 style="font-size: 35px">View Players</h1>
           <p>Enter in the Player Name or select View All</p>
 
-<form method="POST" action="/searchPlayers.php" id="pid">
+<form method="POST" action="/searchPlayers.1.php" id="pid">
     <input type="number" name="pid" id="pid" placeholder="Player ID">
-    <input type="submit" name="searchPlayers" value="Search" />
+    <input type="submit" name="searchPlayers" href="/searchPlayers.1.php" value="Search" />
 </form> 
     
     

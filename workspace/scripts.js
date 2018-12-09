@@ -58,7 +58,7 @@ var photoURL=$("#photoURL").val();
 
 
 
-var dataTosend='id='+id+'&firstName='+firstName+'&lastName='+lastName+'&inGameName='+inGameName+'&hometown='+hometown+'&region='+region;
+var dataTosend='id='+id+'&firstName='+firstName+'&lastName='+lastName+'&inGameName='+inGameName+'&hometown='+hometown+'&region='+region+'&photoURL='+photoURL;
 alert("Player " + firstName + " " + lastName + " " + "Added Sucessfully");
 $.ajax({
 
@@ -105,6 +105,42 @@ alert(teamName + " Added Sucessfully");
 $.ajax({
 
 url: '/insertTeam.php',
+
+type: 'POST',
+
+data:dataTosend,
+
+async: true,
+
+success: function (data) {
+
+//alert(idflight + "HELLO");
+
+},
+
+});
+
+}
+
+
+function submit_bio()
+
+{
+
+var playerId=$("#playerId").val();
+
+var languageCode=$("#languageCode").val();
+
+var bio=$("#bio").val();
+
+
+
+
+var dataTosend='playerId='+playerId+'&languageCode='+languageCode+'&bio='+bio;
+alert("Bio Added!");
+$.ajax({
+
+url: '/insertPlayerBio.php',
 
 type: 'POST',
 

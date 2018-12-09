@@ -1,7 +1,14 @@
+<?php
+    $db = pg_connect("host=localhost dbname=lolDB user=postgres password=123");
+    
+    
+    echo $result;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,7 +16,7 @@
     <meta name="author" content="">
 
     <title>LoL ESport</title>
-
+    <script src="/scripts.js"></script>
    <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -36,42 +43,88 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-<li><a href="/index.html">Home</a></li>>
+            <li class="active"><a href="/index.html">Home</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
     {% load static %}
     <img style="width:100%"src="{% static "2deb15a4a5c147aa45d325da3e623823_ed6ccc8a8fc8129726e0059ea5881678.jpeg" %}" alt="My image"> <div class="">
+   
     <div class="container">    
       <div class="jumbotron">
         <div class="container">
-          <h1 style="font-size: 35px">Add A Player Bio</h1>
+          <h1 style="font-size: 35px">View Players</h1>
+          <p>Enter in the Player Name or select View All</p>
+
+<form method="POST" action="/searchPlayers.php" id="pid">
+    <input type="number" name="pid" id="pid" placeholder="Player ID">
+    <input type="submit" name="searchPlayers" value="Search" />
+</form> 
+    
+    
+    <a href="/selectAllPlayers.php"><button>View All</button></a><br><br>
+
+
+<!-- START OF PHP -->
+<?php
+$db = pg_connect("host=localhost dbname=lolDB user=postgres password=123");
+
+$pid=$_POST['pid'];
 
 
 
-            
-            
-            <form>
-  <fieldset>
-    <legend>Add Player Bio:</legend>
-    Player ID:<br>
-    <input type="text" name="PlayerId" id="PlayerId"><br><br>
-    languageCode:<br>
-    <input type="text" name="languageCode" id="languageCode"><br><br>
-    Bio:<br>
-    <input type="text" name="bio" id="bio" style="height:200px;"><br><br>
+$query = "SELECT * FROM Players WHERE id=$pid";
+$result3 = pg_query($db, $query) or die('Query failed: ' . pg_last_error());
 
-<script src="/scripts.js"></script>
-    <button type="submit" onclick="submit_bio();" >Submit</button>
-  </fieldset>
-</form>
+
+$i = 0;
+echo '<html><body><table><tr>';
+while ($i < pg_num_fields($result3))
+{
+	$fieldName = pg_field_name($result3, $i);
+	echo '<td>' . $fieldName . '</td>';
+	$i = $i + 1;
+}
+echo '</tr>';
+$i = 0;
+
+while ($row = pg_fetch_row($result3)) 
+{
+
+
+
+	echo '<tr>';
+	$count = count($row);
+	$y = 0;
+	while ($y < $count)
+	{
+		$c_row = current($row);
+		echo '<td>' . $c_row . '</td>';
+		next($row);
+		$y = $y + 1;
+	}
+	echo '</tr>';
+	$i = $i + 1;
+}
+pg_free_result($result3);
+
+echo '</table></body></html>';
+
+
+?>
+       
+<!--END OF PHP -->       
         </div>
       </div>      </div>
 
     </div><!-- /.container -->
+</div>
 
-<!-- Table style-->       
+
+</body>
+
+<!-- Style for table -->
 <style>
 table {
     font-family: arial, sans-serif;
@@ -90,11 +143,4 @@ tr:nth-child(even) {
 }
 </style>
 
-<script src="/scripts.js"></script>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-  </body>
 </html>
